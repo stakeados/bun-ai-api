@@ -6,4 +6,5 @@ export interface ChatMessage {
 export interface AIService {
   name: string;
   chat: (messages: ChatMessage[]) => Promise<AsyncIterable<string>>;
+  complete: (messages: ChatMessage[]) => Promise<string>;
 }

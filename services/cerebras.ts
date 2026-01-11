@@ -20,5 +20,17 @@ export const cerebrasService: AIService = {
         yield (chunk as any).choices[0]?.delta?.content || ''
       }
     })()
+  },
+  async complete(messages: ChatMessage[]) {
+    const response = await cerebras.chat.completions.create({
+      messages: messages as any,
+      model: 'zai-glm-4.6',
+      stream: false,
+      max_completion_tokens: 40960,
+      temperature: 0.6,
+      top_p: 0.95
+    });
+
+    return (response as any).choices[0]?.message?.content || '';
   }
 }
