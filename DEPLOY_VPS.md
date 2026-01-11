@@ -25,6 +25,7 @@ CEREBRAS_API_KEY=tu_llave
 GOOGLE_GENERATIVE_AI_API_KEY=tu_llave
 OPENROUTER_API_KEY=tu_llave
 DEEPSEEK_API_KEY=tu_llave
+API_PROXY_KEY=tu_clave_secreta_para_proteger_la_api
 PORT=3000
 ```
 
@@ -32,10 +33,21 @@ PORT=3000
 
 1. Dale al botón **Deploy**.
 2. Dokploy leerá el `nixpacks.toml` y arrancará el servidor usando Bun automáticamente.
-3. Una vez termine, tendrás una URL pública (si has configurado un dominio) o podrás acceder vía IP en el puerto 3000.
 
----
+## 5. Configurar Dominio (Opcional pero recomendado)
 
-> [!TIP]
-> **¿Por qué Nixpacks?**
-> He incluido un archivo `nixpacks.toml` que le dice a Dokploy exactamente cómo instalar Bun y arrancar tu API sin que tengas que configurar Docker manualmente.
+Para que tu API sea profesional (ej: `api.tu-dominio.com`):
+
+1. En tu registrador de dominios (Cloudflare, GoDaddy, etc.):
+   - Crea un registro **A** que apunte a la **IP de tu VPS**.
+2. En Dokploy (dentro de tu aplicación):
+   - Ve a la pestaña **Domains**.
+   - Añade el dominio (ej: `ia.tu-negocio.com`).
+   - Dokploy generará el certificado **SSL (HTTPS)** automáticamente.
+
+## 6. Seguridad (Protección de Créditos)
+
+He añadido una capa de seguridad para que nadie te use los créditos si descubren tu URL:
+1. Asegúrate de poner algo en `API_PROXY_KEY` en Dokploy.
+2. Cualquier petición (n8n, otros agentes) deberá llevar el header: 
+   `Authorization: Bearer tu_clave_secreta`.

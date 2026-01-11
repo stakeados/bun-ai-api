@@ -29,6 +29,17 @@ const server = Bun.serve({
   async fetch(req) {
     const { pathname } = new URL(req.url)
 
+    // Simple Security Layer
+    const proxyKey = process.env.API_PROXY_KEY;
+    if (proxyKey) {
+      const authHeader = req.headers.get('Authorization') || req.headers.get('X-API-Key');
+      const providedKey = authHeader?.replace('Bearer ', '') || '';
+
+      if (providedKey !== proxyKey) {
+        return new Response("Unauthorized: Invalid API Key", { status: 401 });
+      }
+    }
+
     if (req.method === 'POST' && pathname === '/chat') {
       const { messages } = await req.json() as { messages: ChatMessage[] };
       const service = getNextService();
